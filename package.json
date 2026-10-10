@@ -1,0 +1,16 @@
+{
+  "name": "sap-material-master-automation-demo",
+  "version": "1.1.1",
+  "private": true,
+  "description": "Portfolio-safe simulation of a professional SAP material-master automation workflow.",
+  "type": "module",
+  "scripts": {
+    "serve": "node capture/server.mjs",
+    "record": "node capture/record-demo.mjs",
+    "check": "node --check src/app.js && node --check src/state-machine.js && node --check capture/server.mjs && node --check capture/record-demo.mjs && node --check capture/capture-screenshots.mjs",
+    "screenshots": "node capture/capture-screenshots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.55.0"
+  }
+}
