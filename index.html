@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Portfolio-safe simulation of a professional SAP material-master automation workflow." />
+  <meta name="theme-color" content="#020914" />
+  <title>SAP Material Master Automation — Portfolio Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/app.css" />
+  <link rel="stylesheet" href="styles/erp.css" />
+  <link rel="stylesheet" href="styles/animations.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark">YP<span>/LAB</span></div>
+        <div>
+          <h1>SAP Material Master Automation</h1>
+          <p>Portfolio-safe simulation</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <div class="demo-badge"><i></i><span>DEMO MODE</span><b>Synthetic data</b></div>
+        <button class="ghost-button" id="resetButton" type="button">Reset demo</button>
+        <button class="director-button" id="directorButton" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
+          Run portfolio sequence
+        </button>
+      </div>
+    </header>
+
+    <nav class="workflow-rail" aria-label="Demo workflow">
+      <div class="workflow-track"><span id="workflowFill"></span></div>
+      <div class="workflow-step is-active" data-step="source"><i>01</i><span>Source</span></div>
+      <div class="workflow-step" data-step="validate"><i>02</i><span>Validate</span></div>
+      <div class="workflow-step" data-step="mm01"><i>03</i><span>MM01</span></div>
+      <div class="workflow-step" data-step="mm02"><i>04</i><span>MM02</span></div>
+      <div class="workflow-step" data-step="complete"><i>05</i><span>Complete</span></div>
+    </nav>
+
+    <main class="workspace" id="workspace">
+      <aside class="controller-panel">
+        <section class="controller-section source-section">
+          <div class="section-label">SOURCE</div>
+          <div class="source-card" id="sourceCard">
+            <div class="file-icon" aria-hidden="true"><span>X</span></div>
+            <div class="source-meta">
+              <strong id="sourceName">No batch loaded</strong>
+              <p id="sourceDetail">Load the synthetic workbook to begin.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="controller-section validation-section">
+          <div class="section-label">VALIDATION</div>
+          <div class="validation-summary" id="validationSummary">
+            <div><strong id="readyCount">—</strong><span>READY</span></div>
+            <div><strong id="reviewCount">—</strong><span>REVIEW</span></div>
+          </div>
+          <p class="validation-message" id="validationMessage">Not started</p>
+          <div class="issue-editor" id="issueEditor" hidden>
+            <div>
+              <span>Resolve issue</span>
+              <strong>Row 37 · Missing internal part number</strong>
+            </div>
+            <label for="correctionInput">Internal part number</label>
+            <div class="issue-input-row">
+              <input id="correctionInput" inputmode="numeric" autocomplete="off" placeholder="7001037" />
+              <button type="button" id="applyCorrection">Apply</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="controller-section operation-section">
+          <div class="section-label">CURRENT OPERATION</div>
+          <dl class="operation-grid">
+            <div><dt>Material</dt><dd id="currentMaterial">—</dd></div>
+            <div><dt>Transaction</dt><dd id="currentTransaction">—</dd></div>
+            <div class="operation-wide"><dt>Stage</dt><dd id="currentStage">Waiting for input</dd></div>
+          </dl>
+          <div class="running-indicator" id="runningIndicator"><i></i><span>Idle</span></div>
+        </section>
+
+        <section class="controller-section activity-section">
+          <div class="section-label">ACTIVITY</div>
+          <div class="activity-log" id="activityLog" aria-live="polite">
+            <div class="log-empty">Demo ready.</div>
+          </div>
+        </section>
+
+        <div class="action-dock" id="actionDock">
+          <button type="button" class="primary-action" id="primaryAction">Load demo batch</button>
+          <p id="actionHint">100 synthetic materials · no SAP connection</p>
+        </div>
+      </aside>
+
+      <section class="erp-panel" id="erpPanel" aria-label="Enterprise ERP simulation">
+        <div class="erp-frame">
+          <header class="erp-gui-chrome">
+            <div class="erp-titlebar">
+              <div class="erp-system-badge" aria-hidden="true">ERP</div>
+              <div class="erp-window-title"><span>Training System · Client 100</span><b id="erpTransactionTitle">Easy Access</b></div>
+              <div class="erp-window-meta"><span>DEMO</span><span>EN</span><span>100</span></div>
+            </div>
+            <div class="erp-menubar" aria-hidden="true">
+              <span>Material</span><span>Edit</span><span>Goto</span><span>Extras</span><span>Environment</span><span>System</span><span>Help</span>
+            </div>
+            <div class="erp-commandbar" aria-hidden="true">
+              <button class="erp-icon-button erp-enter" title="Enter">✓</button>
+              <button class="erp-icon-button">←</button>
+              <button class="erp-icon-button">↩</button>
+              <label>Command</label>
+              <div class="erp-command-field" id="erpCommandField">/n</div>
+              <button class="erp-icon-button erp-save-icon" title="Save">▣</button>
+              <span class="erp-tool-separator"></span>
+              <button class="erp-icon-button">⌕</button>
+              <button class="erp-icon-button">▤</button>
+              <button class="erp-icon-button">?</button>
+            </div>
+          </header>
+          <div class="erp-content" id="erpContent"></div>
+          <footer class="erp-statusbar" id="erpStatusbar">
+            <span class="erp-status-icon">○</span><p>Ready</p>
+            <div class="erp-status-meta"><span>DEMO</span><span>100</span><span>INS</span></div>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <section class="data-preview" id="dataPreview" aria-label="Input data preview">
+      <div class="data-preview-head">
+        <div><span>INPUT PREVIEW</span><strong id="previewTitle">MATERIAL_MASTER_DEMO.xlsx</strong></div>
+        <div><b id="rowCountBadge">0 rows</b><span id="previewStatus">Not loaded</span></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ROW</th><th>No. de parte interno</th><th>VALIDATION</th></tr></thead>
+          <tbody id="dataTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="batch-bar">
+      <div class="batch-copy"><span id="batchStatus">Awaiting batch</span><strong id="batchCounter">0 / 100</strong></div>
+      <div class="batch-progress"><span id="batchProgress"></span></div>
+      <div class="batch-note">Python · SAP GUI Scripting · MM01/MM02 · Input validation</div>
+    </footer>
+  </div>
+
+  <section class="impact-scene" id="impactScene" aria-hidden="true">
+    <button class="impact-close" id="impactClose" type="button" aria-label="Return to demo">×</button>
+    <div class="impact-inner">
+      <span class="impact-eyebrow">MEASURED CHANGE</span>
+      <p class="impact-context">Approximate recurring batch · <strong>~100 materials</strong></p>
+      <div class="impact-comparison">
+        <div class="impact-metric impact-metric--manual">
+          <strong><span class="metric-number" data-target="90">0</span><small>min</small></strong>
+          <span>MANUAL</span>
+        </div>
+        <div class="impact-arrow" aria-hidden="true"><i></i><span>→</span></div>
+        <div class="impact-metric impact-metric--auto">
+          <strong><span class="metric-number" data-target="10">0</span><small>min</small></strong>
+          <span>AUTOMATED</span>
+        </div>
+      </div>
+      <h2><span class="metric-number" data-target="89">0</span><small>%</small> less execution time</h2>
+      <p class="impact-footnote">Approximate benchmark from the original professional workflow. This demo uses synthetic data and does not connect to a production SAP environment.</p>
+    </div>
+  </section>
+
+  <div class="director-overlay" id="directorOverlay" aria-hidden="true">
+    <span>PORTFOLIO SEQUENCE</span>
+    <b id="directorCountdown">3</b>
+  </div>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
