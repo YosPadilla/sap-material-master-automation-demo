@@ -1,0 +1,10 @@
+.field-flash{animation:fieldFlash .48s ease}.row-validation-pulse{animation:rowPulse .42s ease}.success-flash{animation:successFlash .65s ease}.issue-shake{animation:issueShake .34s ease}.count-pop{animation:countPop .34s cubic-bezier(.22,1,.36,1)}.impact-scene.is-visible .impact-arrow i{animation:impactLine 1s .5s cubic-bezier(.22,1,.36,1) both}.impact-scene.is-visible .impact-arrow span{animation:impactArrow .5s 1s both}.impact-scene.is-visible .impact-metric--auto{animation:impactAuto .7s .85s both}.impact-scene.is-visible h2{animation:impactHeadline .8s 1.65s both}.director-running .workspace,.director-running .data-preview,.director-running .batch-bar{transition:filter .25s ease}.director-running .primary-action,.director-running .topbar-actions button{pointer-events:none}
+@keyframes fieldFlash{0%{box-shadow:0 0 0 0 rgba(56,189,248,.4)}50%{box-shadow:0 0 0 5px rgba(56,189,248,.12)}100%{box-shadow:0 0 0 0 rgba(56,189,248,0)}}
+@keyframes rowPulse{0%,100%{background:transparent}50%{background:rgba(56,189,248,.08)}}
+@keyframes successFlash{0%{background:#d8e0e5}50%{background:#cfe8d9}100%{background:#d9eee2}}
+@keyframes issueShake{0%,100%{transform:none}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+@keyframes countPop{0%{transform:scale(.8);opacity:.2}100%{transform:scale(1);opacity:1}}
+@keyframes impactLine{from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
+@keyframes impactArrow{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+@keyframes impactAuto{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes impactHeadline{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
