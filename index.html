@@ -26,9 +26,9 @@
       <div class="topbar-actions">
         <div class="demo-badge"><i></i><span>DEMO MODE</span><b>Synthetic data</b></div>
         <button class="ghost-button" id="resetButton" type="button">Reset demo</button>
-        <button class="director-button" id="directorButton" type="button">
+        <button class="guided-button" id="guidedButton" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
-          Run portfolio sequence
+          Run guided workflow
         </button>
       </div>
     </header>
@@ -147,7 +147,7 @@
     <footer class="batch-bar">
       <div class="batch-copy"><span id="batchStatus">Awaiting batch</span><strong id="batchCounter">0 / 100</strong></div>
       <div class="batch-progress"><span id="batchProgress"></span></div>
-      <div class="batch-note">Python · SAP GUI Scripting · MM01/MM02 · Input validation</div>
+      <div class="batch-note">Professional workflow · Python · SAP GUI Scripting · MM01/MM02</div>
     </footer>
   </div>
 
@@ -172,9 +172,9 @@
     </div>
   </section>
 
-  <div class="director-overlay" id="directorOverlay" aria-hidden="true">
-    <span>PORTFOLIO SEQUENCE</span>
-    <b id="directorCountdown">3</b>
+  <div class="guided-overlay" id="guidedOverlay" aria-hidden="true">
+    <span>GUIDED WORKFLOW</span>
+    <b id="guidedCountdown">3</b>
   </div>
 
   <script type="module" src="src/app.js"></script>
