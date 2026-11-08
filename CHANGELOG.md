@@ -4,8 +4,8 @@
 
 - Reframed the repository around the professional SAP automation problem and engineering approach.
 - Separated the **professional Python + SAP GUI Scripting workflow** from the **JavaScript public reconstruction**.
-- Renamed the automatic presentation path from Director mode to **Guided workflow**.
-- Removed presentation-capture tooling and dependencies from the public repository.
+- Renamed the automatic presentation path to **Guided workflow**.
+- Simplified the public repository to the runnable demo, case-study assets and lightweight local server.
 - Updated technology, architecture, privacy and author sections.
 
 ## Portfolio release — 2026-10-10
