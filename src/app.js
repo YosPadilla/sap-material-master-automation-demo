@@ -4,17 +4,15 @@ import { loadMaterials, createSyntheticMaterials } from './demo-data.js';
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 const params = new URLSearchParams(location.search);
-const captureMode = params.get('capture') === '1';
-const autoplay = params.get('director') === '1' || params.get('autoplay') === '1';
+const autoplay = params.get('guided') === '1' || params.get('autoplay') === '1';
 const requestedScene = params.get('scene');
 const speed = Math.max(.35, Math.min(2, Number(params.get('speed')) || 1));
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches && !captureMode;
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-if (captureMode) document.body.classList.add('capture-mode');
 
 const machine = new DemoStateMachine('idle');
 let materials = createSyntheticMaterials();
-let directorRunning = false;
+let guidedRunning = false;
 let automationRunning = false;
 let issueResolved = false;
 let logClock = { h: 9, m: 42, s: 18 };
@@ -28,7 +26,7 @@ const els = {
   erpPanel: $('#erpPanel'), erpContent: $('#erpContent'), erpTitle: $('#erpTransactionTitle'), erpStatusbar: $('#erpStatusbar'), erpCommandField: $('#erpCommandField'),
   dataTableBody: $('#dataTableBody'), rowCountBadge: $('#rowCountBadge'), previewStatus: $('#previewStatus'),
   batchStatus: $('#batchStatus'), batchCounter: $('#batchCounter'), batchProgress: $('#batchProgress'), workflowFill: $('#workflowFill'),
-  resetButton: $('#resetButton'), directorButton: $('#directorButton'), directorOverlay: $('#directorOverlay'), directorCountdown: $('#directorCountdown'),
+  resetButton: $('#resetButton'), guidedButton: $('#guidedButton'), guidedOverlay: $('#guidedOverlay'), guidedCountdown: $('#guidedCountdown'),
   impactScene: $('#impactScene'), impactClose: $('#impactClose')
 };
 
@@ -451,25 +449,25 @@ function hideImpact() {
 }
 
 async function resetDemo() {
-  directorRunning=false; automationRunning=false; issueResolved=false; materials=createSyntheticMaterials();
-  document.body.classList.remove('director-running');
+  guidedRunning=false; automationRunning=false; issueResolved=false; materials=createSyntheticMaterials();
+  document.body.classList.remove('guided-running');
   els.impactScene.classList.remove('is-visible'); els.impactScene.setAttribute('aria-hidden','true');
   els.correctionInput.value=''; els.validationSection.classList.remove('has-issue','is-ready'); clearLogs();
   logClock={h:9,m:42,s:18}; window.__demoComplete=false; machine.transition('idle');
 }
 
 async function countdown() {
-  els.directorOverlay.classList.add('is-visible'); els.directorOverlay.setAttribute('aria-hidden','false');
-  for (const n of [3,2,1]) { els.directorCountdown.textContent=String(n); await wait(480); }
-  els.directorCountdown.textContent='GO'; await wait(260);
-  els.directorOverlay.classList.remove('is-visible'); els.directorOverlay.setAttribute('aria-hidden','true');
+  els.guidedOverlay.classList.add('is-visible'); els.guidedOverlay.setAttribute('aria-hidden','false');
+  for (const n of [3,2,1]) { els.guidedCountdown.textContent=String(n); await wait(480); }
+  els.guidedCountdown.textContent='GO'; await wait(260);
+  els.guidedOverlay.classList.remove('is-visible'); els.guidedOverlay.setAttribute('aria-hidden','true');
 }
 
-async function runDirectorSequence({skipCountdown=false}={}) {
-  if (directorRunning) return;
-  directorRunning=true; document.body.classList.add('director-running');
-  await resetDemo(); directorRunning=true; document.body.classList.add('director-running');
-  if (!skipCountdown && !captureMode) await countdown();
+async function runGuidedSequence({skipCountdown=false}={}) {
+  if (guidedRunning) return;
+  guidedRunning=true; document.body.classList.add('guided-running');
+  await resetDemo(); guidedRunning=true; document.body.classList.add('guided-running');
+  if (!skipCountdown) await countdown();
   await wait(350);
   await loadBatch(); await wait(620);
   await validateBatch(); await wait(780);
@@ -480,7 +478,7 @@ async function runDirectorSequence({skipCountdown=false}={}) {
   window.__demoComplete=true;
   document.documentElement.dataset.demoComplete='true';
   if (typeof window.onDemoComplete === 'function') { try{window.onDemoComplete();}catch(_){} }
-  directorRunning=false; document.body.classList.remove('director-running');
+  guidedRunning=false; document.body.classList.remove('guided-running');
 }
 
 els.primaryAction.addEventListener('click', async () => {
@@ -494,10 +492,10 @@ els.primaryAction.addEventListener('click', async () => {
 els.applyCorrection.addEventListener('click',()=>resolveIssue(false));
 els.correctionInput.addEventListener('keydown',e=>{if(e.key==='Enter') resolveIssue(false)});
 els.resetButton.addEventListener('click',resetDemo);
-els.directorButton.addEventListener('click',()=>runDirectorSequence());
+els.guidedButton.addEventListener('click',()=>runGuidedSequence());
 els.impactClose.addEventListener('click',hideImpact);
 
-window.demo = { run: runDirectorSequence, reset: resetDemo, state: () => machine.state, showImpact };
+window.demo = { run: runGuidedSequence, reset: resetDemo, state: () => machine.state, showImpact };
 window.__demoComplete=false;
 window.__demoState='idle';
 window.__demoHistory=[];
@@ -508,5 +506,5 @@ if (requestedScene === 'impact') {
   materials=createSyntheticMaterials(); materials[36].internalPartNumber='7001037'; issueResolved=true;
   machine.transition('batchComplete'); setTimeout(()=>showImpact(),300);
 } else if (autoplay) {
-  setTimeout(()=>runDirectorSequence({skipCountdown:true}), captureMode ? 600 : 900);
+  setTimeout(()=>runGuidedSequence({skipCountdown:true}), 900);
 }
