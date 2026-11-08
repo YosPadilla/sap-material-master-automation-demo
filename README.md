@@ -1,11 +1,12 @@
 # SAP Material Master Automation
 
-**Portfolio-safe simulation of a professional SAP material-master automation workflow.**  
-A validated batch moves through an MM01/MM02-style process, surfaces incomplete input before execution, and then demonstrates the measured change from the original recurring workflow.
+**Portfolio-safe reconstruction of a professional SAP material-master automation workflow.**  
+A validated batch moves through an MM01/MM02-style process, surfaces incomplete input before execution, and demonstrates the measured change from the original recurring workflow.
 
-**Python · SAP GUI Scripting · ERP workflows · Input validation · Process automation**
+**Professional workflow: Python · SAP GUI Scripting · SAP GUI · MM01/MM02 · Batch validation**  
+**Public reconstruction: JavaScript · HTML · CSS · State machine · Synthetic JSON/XLSX data**
 
-> **Portfolio simulation:** this repository does not connect to SAP and contains no company credentials, production master data, internal URLs, or proprietary production source code. The material numbers and configuration values shown here are synthetic.
+> **Portfolio reconstruction:** this repository does not connect to SAP and contains no company credentials, production master data, internal URLs, or proprietary production source code. The material numbers and configuration values shown here are synthetic.
 
 [**Live Demo →**](https://yospadilla.github.io/sap-material-master-automation-demo/)
 
@@ -21,7 +22,7 @@ The benchmark above is specific to the original professional workflow. It is not
 
 ## Why this project existed
 
-Material-master work required a repetitive sequence of data entry and navigation in SAP GUI. The automation project focused on making that recurring work more consistent by:
+Material-master work required a repetitive sequence of data entry and navigation in SAP GUI. The professional automation focused on making that recurring work faster and more consistent by:
 
 - reading a batch of internal material numbers;
 - validating required input before execution;
@@ -30,20 +31,35 @@ Material-master work required a repetitive sequence of data entry and navigation
 - surfacing records that require human attention instead of treating input as blindly valid;
 - keeping a clear execution trail for review.
 
-The portfolio demo recreates that logic safely without using a live SAP environment.
+The public reconstruction recreates that business logic safely without using a live SAP environment.
 
-## Demo
+## Technology and automation approach
 
-Open the **[live portfolio demo](https://yospadilla.github.io/sap-material-master-automation-demo/)** to run the same sequence shown in this case study.
+### Professional workflow
 
-The repository includes two ways to experience the project:
+The original implementation was built around **Python + SAP GUI Scripting** and applied controlled automation to a recurring material-master process. The important engineering pattern was not simply automating clicks: input was checked before execution, exceptions remained visible, and the process followed a defined MM01 → MM02 sequence.
 
-- **Interactive mode** — step through load, validation, correction and execution manually.
-- **Director mode** — play the complete portfolio sequence automatically for recording or presentation.
+Core concepts represented by the professional workflow:
 
-The included capture tooling can reproduce the same sequence at **1600×900**, take milestone screenshots and save a video without depending on the physical resolution of the computer running it.
+- **Python** for batch automation and execution logic;
+- **SAP GUI Scripting** for controlled interaction with SAP GUI;
+- **MM01 / MM02** material-master transactions;
+- **batch input validation** before SAP execution;
+- **exception handling** for incomplete or invalid records;
+- **activity logging** and process traceability;
+- **process measurement** against the prior manual workflow.
 
-The Director sequence is reproducible locally with the included Playwright capture tooling.
+### Public reconstruction
+
+The live portfolio version intentionally does **not** connect to SAP. It is a safe front-end reconstruction implemented with:
+
+- **Vanilla JavaScript** for workflow/state logic;
+- a **finite-state machine** for controlled progression through validation, MM01, MM02 and completion;
+- **HTML + CSS** for the ERP-style training interface;
+- **JSON / XLSX synthetic data** for the demonstration batch;
+- a **guided workflow** that automatically walks through the same business sequence for presentation.
+
+This separation keeps the professional SAP experience technically clear without publishing production access, source code or master data.
 
 ## Workflow
 
@@ -83,19 +99,19 @@ One synthetic row is intentionally incomplete. The demo identifies it before the
 
 ![Validation exception](docs/media/validation.webp)
 
-This is intentional: the project is meant to communicate **controlled automation**, not only scripted clicks.
+This is intentional: the project communicates **controlled automation**, not blind scripted execution.
 
-## ERP workflow simulation
+## ERP workflow reconstruction
 
-The right side of the interface is a purpose-built ERP training simulation. It uses familiar enterprise-software patterns while deliberately avoiding a pixel-perfect clone, SAP branding, production configuration or a real connection.
+The right side of the interface is a purpose-built ERP training simulation. It uses familiar enterprise-software patterns while deliberately avoiding a pixel-perfect clone, SAP branding, production configuration or a real SAP connection.
 
 ![MM01-style workflow](docs/media/mm01.webp)
 
-The left side represents the automation layer: source state, validation, current transaction, execution stage and activity history.
+The left side represents the workflow controller: source state, validation, current transaction, execution stage and activity history.
 
 ## Batch result
 
-After the first material is shown in detail, the remaining records are accelerated for the portfolio demonstration.
+After the first material is shown in detail, the remaining synthetic records are accelerated to communicate the batch-oriented workflow.
 
 ![Batch complete](docs/media/batch-complete.webp)
 
@@ -103,13 +119,14 @@ After the first material is shown in detail, the remaining records are accelerat
 
 ![Measured change](docs/media/impact.webp)
 
-For the original recurring professional workflow, a batch of approximately 100 materials was reduced from roughly **90 minutes of manual execution to about 10 minutes automated**.
+For the original recurring professional workflow, a batch of approximately 100 materials was reduced from roughly **90 minutes of manual execution to about 10 minutes automated** — approximately **89% less execution time** for that recurring process.
 
 ## What is real vs. simulated
 
 ### Based on the professional project
 
 - Python-driven SAP GUI automation.
+- SAP GUI Scripting.
 - MM01/MM02 material-master workflow.
 - Batch-oriented execution.
 - Input validation and progressive exception handling.
@@ -120,35 +137,36 @@ For the original recurring professional workflow, a batch of approximately 100 m
 - All material identifiers.
 - ERP screens and visual interface.
 - Plant, material-type and valuation/configuration values shown in the demo.
-- Timing of the on-screen Director sequence.
+- Timing of the guided walkthrough.
 - The intentionally incomplete demonstration record.
+- The JavaScript interface used to reconstruct the professional workflow publicly.
 
 ## Architecture
 
 ```text
 ┌───────────────────────────────┐
-│ Synthetic source data        │
-│ JSON + XLSX                  │
+│ Synthetic source data         │
+│ JSON + XLSX                   │
 └──────────────┬────────────────┘
                ▼
 ┌───────────────────────────────┐
-│ Validation / state machine   │
-│ Vanilla JavaScript           │
+│ Input validation              │
+│ controlled exception handling │
 └──────────────┬────────────────┘
                ▼
 ┌───────────────────────────────┐
-│ Automation Controller        │
-│ orchestration + activity log │
+│ Workflow state machine        │
+│ JavaScript + activity log     │
 └──────────────┬────────────────┘
                ▼
 ┌───────────────────────────────┐
-│ ERP Simulation              │
-│ MM01 → MM02 → batch result  │
+│ ERP workflow reconstruction   │
+│ MM01 → MM02 → batch result    │
 └──────────────┬────────────────┘
                ▼
 ┌───────────────────────────────┐
-│ Playwright capture tooling   │
-│ screenshots + video         │
+│ Measured operational impact   │
+│ ~90 min → ~10 min             │
 └───────────────────────────────┘
 ```
 
@@ -168,13 +186,9 @@ For the original recurring professional workflow, a batch of approximately 100 m
 ├── data/
 │   ├── materials-demo.json
 │   └── MATERIAL_MASTER_DEMO.xlsx
-├── capture/
-│   ├── server.mjs
-│   ├── record-demo.mjs
-│   └── capture-screenshots.mjs
 ├── docs/media/
+├── server.mjs
 ├── START_DEMO.bat
-├── RECORD_DEMO.bat
 └── README.md
 ```
 
@@ -188,7 +202,7 @@ Double-click:
 START_DEMO.bat
 ```
 
-### From a terminal
+### With Node.js
 
 ```bash
 npm install
@@ -201,53 +215,19 @@ Then open:
 http://127.0.0.1:4173
 ```
 
-## Director mode
+## Guided workflow
 
-Use **Run portfolio sequence** in the interface, or open:
-
-```text
-http://127.0.0.1:4173/?director=1
-```
-
-The sequence runs automatically from validation through the impact scene.
-
-## Reproduce the recording
-
-On Windows:
+Use **Run guided workflow** in the interface, or open:
 
 ```text
-RECORD_DEMO.bat
+http://127.0.0.1:4173/?guided=1
 ```
 
-Or from a terminal:
-
-```bash
-npm install
-npx playwright install chromium
-npm run record
-```
-
-The recorder uses a virtual **1600×900** Chromium viewport and verifies that the full interface fits without scrolling before recording begins.
-
-Generated assets are saved in `output/`.
-
-If Playwright's FFmpeg download is interrupted by the network, run:
-
-```text
-NETWORK_RETRY_FFMPEG.bat
-```
-
-For screenshots only:
-
-```text
-RECORD_SCREENSHOTS_ONLY.bat
-```
+The sequence progresses automatically from validation through the measured-impact scene.
 
 ## GitHub Pages
 
-The repository includes a GitHub Pages workflow in `.github/workflows/pages.yml`.
-
-Expected public URL:
+Public URL:
 
 https://yospadilla.github.io/sap-material-master-automation-demo/
 
@@ -270,4 +250,6 @@ The goal is to demonstrate the engineering approach, workflow understanding and 
 
 **Yoshio Padilla**
 
-Computer Systems Engineering · Enterprise Technology · Business Process Automation · Data Analytics
+Computer Systems Engineering · SAP · Business Process Automation · Data Analytics
+
+[LinkedIn](https://www.linkedin.com/in/yoshio-p-889804291/)
